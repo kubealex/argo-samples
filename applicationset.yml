@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-as
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/kubealex/argo-samples.git
+      revision: HEAD
+      directories:
+      - path: "*"
+  template:
+    metadata:
+      name: "{{path.basename}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/kubealex/argo-samples.git
+        targetRevision: HEAD
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'thisisatest'
